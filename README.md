@@ -26,3 +26,5 @@
 ```
 
 #### 5. Visit http://localhost on your browser
+
+HOSTED AT : http://172.105.41.185/
