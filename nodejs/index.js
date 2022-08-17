@@ -1,4 +1,4 @@
-const { request, response } = require("express");
+const { request, response, json } = require("express");
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
@@ -16,21 +16,65 @@ app.get("/alltasks", (request, response) => {
   });
 });
 
-app.post("/alltasks", jsonParser, async (req, res) => {
-  console.log(req.body);
+app.post("/alltasks", jsonParser, async (request, response) => {
+  console.log(request.body);
   const newTask = new Task({
-    title: req.body.title,
-    priority: req.body.priority,
-    is_finished: req.body.is_finished,
+    title: request.body.title,
+    priority: request.body.priority,
+    is_finished: request.body.is_finished,
   });
   try {
     await newTask.save();
     console.log(newTask);
     console.log("Object Saved");
-    res.json({ message: "accepted" });
+    response.status(200);
+    response.json({ message: "accepted" });
   } catch (err) {
     console.log(err);
-    res.json({ message: "not accepted" });
+    response.status(400);
+    response.json({ message: "not accepted" });
+  }
+});
+app.delete("/alltasks", jsonParser, async (request, response) => {
+  try {
+    await Task.deleteOne({ __id: request.body.id });
+    response.status(200);
+    response.json({ message: "Deleted" });
+  } catch (err) {
+    console.log(err);
+    response.status(400);
+    response.json({ message: "Not Deleted" });
+  }
+});
+
+//Endpoint for updating tasks
+app.put("/markcomplete", jsonParser, async (request, response) => {
+  try {
+    await Task.findOneAndUpdate(
+      { __id: request.body.id },
+      { is_finished: true }
+    );
+    response.status(200);
+    response.json({ message: "Marked Complete" });
+  } catch {
+    console.log(err);
+    response.status(400);
+    response.json({ message: "Not Marked Complete" });
+  }
+});
+app.put("/markincomplete", jsonParser, async (request, response) => {
+  try {
+    await Task.findOneAndUpdate(
+      { __id: request.body.id },
+      { is_finished: false }
+    );
+    console.log(a);
+    response.status(200);
+    response.json({ message: "Marked InComplete" });
+  } catch {
+    console.log(err);
+    response.status(400);
+    response.json({ message: "Not Marked InComplete " });
   }
 });
 
