@@ -10,7 +10,7 @@
 
 ```
     git clone https://github.com/Asher-MS/TGH-tech-todo-app
-    cd ./todo-app
+    cd ./TGH-tech-todo-app
 ```
 
 #### 3. Build the docker images
