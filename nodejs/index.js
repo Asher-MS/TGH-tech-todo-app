@@ -50,10 +50,12 @@ app.delete("/alltasks", jsonParser, async (request, response) => {
 //Endpoint for updating tasks
 app.put("/markcomplete", jsonParser, async (request, response) => {
   try {
-    await Task.findOneAndUpdate(
-      { __id: request.body.id },
-      { is_finished: true }
+    let a = await Task.findOneAndUpdate(
+      { _id: request.body.id },
+      { is_finished: true },
+      { new: true }
     );
+    console.log(a);
     response.status(200);
     response.json({ message: "Marked Complete" });
   } catch {
@@ -64,14 +66,16 @@ app.put("/markcomplete", jsonParser, async (request, response) => {
 });
 app.put("/markincomplete", jsonParser, async (request, response) => {
   try {
-    await Task.findOneAndUpdate(
-      { __id: request.body.id },
-      { is_finished: false }
+    let a = await Task.findOneAndUpdate(
+      { _id: request.body.id },
+      { is_finished: false },
+      { new: true }
     );
     console.log(a);
+
     response.status(200);
     response.json({ message: "Marked InComplete" });
-  } catch {
+  } catch (err) {
     console.log(err);
     response.status(400);
     response.json({ message: "Not Marked InComplete " });
@@ -79,13 +83,15 @@ app.put("/markincomplete", jsonParser, async (request, response) => {
 });
 app.put("/markcancelled", jsonParser, async (request, response) => {
   try {
-    await Task.findOneAndUpdate(
-      { __id: request.body.id },
-      { is_cancelled: true }
+    let a = await Task.findOneAndUpdate(
+      { _id: request.body.id },
+      { is_cancelled: true },
+      { new: true }
     );
+    console.log(a);
     response.status(200);
     response.json({ message: "Marked Cancelled" });
-  } catch {
+  } catch (err) {
     console.log(err);
     response.status(400);
     response.json({ message: "Not Marked Cacelled" });
@@ -93,13 +99,15 @@ app.put("/markcancelled", jsonParser, async (request, response) => {
 });
 app.put("/marknotcancelled", jsonParser, async (request, response) => {
   try {
-    await Task.findOneAndUpdate(
-      { __id: request.body.id },
-      { is_cancelled: false }
+    let a = await Task.findOneAndUpdate(
+      { _id: request.body.id },
+      { is_cancelled: false },
+      { new: true }
     );
+    console.log(a);
     response.status(200);
     response.json({ message: "Marked not Cancelled" });
-  } catch {
+  } catch (err) {
     console.log(err);
     response.status(400);
     response.json({ message: "Not Marked not Cacelled" });
