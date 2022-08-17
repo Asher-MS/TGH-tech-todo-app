@@ -126,6 +126,28 @@ app.put("/marknotcancelled", jsonParser, async (request, response) => {
   }
 });
 
+app.get("/report", (request, response) => {
+  Task.find({}, (err, tasks) => {
+    let no_of_pending_tasks = 0;
+    let no_of_cancelled_tasks = 0;
+    let no_of_completed_tasks = 0;
+    tasks.forEach((task) => {
+      if (task.is_finished) {
+        no_of_completed_tasks++;
+      } else {
+        no_of_pending_tasks++;
+      }
+      if (task.is_cancelled) no_of_cancelled_tasks++;
+    });
+
+    response.status(200);
+    response.json({
+      no_of_pending_tasks: no_of_pending_tasks,
+      no_of_completed_tasks: no_of_completed_tasks,
+      no_of_cancelled_tasks: no_of_cancelled_tasks,
+    });
+  });
+});
 mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () => {
   console.log("Connected to database");
   app.listen(process.env.SERVER_PORT, () =>
