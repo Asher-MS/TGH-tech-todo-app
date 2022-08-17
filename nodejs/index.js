@@ -6,7 +6,12 @@ const bodyParser = require("body-parser");
 dotenv.config();
 const app = express();
 const jsonParser = bodyParser.json();
-
+const cors = require("cors");
+app.use(
+  cors({
+    origin: "http://localhost",
+  })
+);
 const Task = require("./models/Task");
 
 // Endpoint for all tasks
