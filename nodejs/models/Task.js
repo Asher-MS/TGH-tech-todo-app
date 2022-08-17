@@ -12,5 +12,9 @@ const todoTaskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  is_cancelled: {
+    type: Boolean,
+    default: false,
+  },
 });
 module.exports = mongoose.model("TodoTask", todoTaskSchema);

@@ -77,6 +77,34 @@ app.put("/markincomplete", jsonParser, async (request, response) => {
     response.json({ message: "Not Marked InComplete " });
   }
 });
+app.put("/markcancelled", jsonParser, async (request, response) => {
+  try {
+    await Task.findOneAndUpdate(
+      { __id: request.body.id },
+      { is_cancelled: true }
+    );
+    response.status(200);
+    response.json({ message: "Marked Cancelled" });
+  } catch {
+    console.log(err);
+    response.status(400);
+    response.json({ message: "Not Marked Cacelled" });
+  }
+});
+app.put("/marknotcancelled", jsonParser, async (request, response) => {
+  try {
+    await Task.findOneAndUpdate(
+      { __id: request.body.id },
+      { is_cancelled: false }
+    );
+    response.status(200);
+    response.json({ message: "Marked not Cancelled" });
+  } catch {
+    console.log(err);
+    response.status(400);
+    response.json({ message: "Not Marked not Cacelled" });
+  }
+});
 
 mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () => {
   console.log("Connected to database");
