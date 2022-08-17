@@ -12,7 +12,19 @@ const Task = require("./models/Task");
 // Endpoint for all tasks
 app.get("/alltasks", (request, response) => {
   Task.find({}, (err, tasks) => {
-    response.json(tasks);
+    let sortedtasks = [];
+    tasks.forEach((task) => {
+      if (!task.is_finished) sortedtasks.push(task);
+    });
+    tasks.forEach((task) => {
+      if (task.is_cancelled && !sortedtasks.includes(task))
+        sortedtasks.push(task);
+    });
+    tasks.forEach((task) => {
+      if (!sortedtasks.includes(task)) sortedtasks.push(task);
+    });
+    response.status(200);
+    response.json(sortedtasks);
   });
 });
 
