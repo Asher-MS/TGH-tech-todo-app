@@ -16,17 +16,21 @@
 #### 3. Build the docker images
 
 ```
-    docker compose -f docker-compose.yml build
+    docker compose -f nodejs/docker-compose.yml build
+    docker compose -f todo-react/docker-compose.yml build
 ```
 
 #### 4. Run the built images
 
 ```
-    docker compose -f docker-compose.yml up
+    docker compose -f nodejs/docker-compose.yml up
+    docker compose -f todo-react/docker-compose.yml up
 ```
 
 #### 5. Visit http://localhost on your browser
 
-HOSTED AT : http://172.105.41.185/
+HOSTED AT : http://192.46.211.76/
+
+Backend Hosted at : http://192.46.211.87/
 
 ## [API Docs](https://github.com/Asher-MS/TGH-tech-todo-app/blob/master/nodejs/API-Docs.md)
