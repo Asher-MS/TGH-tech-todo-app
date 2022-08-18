@@ -1,13 +1,9 @@
 version: "3.9"
 services:
   backend:
-    build: "nodejs"
+    build: .
     ports:
-      - "3000:3000"
-  frontend:
-    build: "todo-react"
-    ports:
-      - "80:80"
+      - "8000:80"
 
   mongo:
     image: mongo

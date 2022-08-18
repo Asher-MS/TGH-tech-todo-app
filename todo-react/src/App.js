@@ -5,7 +5,7 @@ import { Input, Text, Button } from "@geist-ui/core";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Task from "./components/Task";
-let API_URL = "http://localhost:3000/";
+let API_URL = "http://localhost:8000/";
 function App() {
   let [tasks, setTasks] = useState([]);
   let currentTask = "task";
