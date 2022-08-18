@@ -1,6 +1,6 @@
 # API-Docs
 
-### Models
+## Models
 
 #### 1.Task
 
@@ -26,7 +26,28 @@
     }
 ```
 
-### Endpoints
+## Authentication
+
+---
+
+The server uses Basic Authentication
+
+The Authorization header follows this format:
+
+```
+    Authorization: Basic <credentials>
+```
+
+_1.The user’s username and password are combined with a colon._
+
+_2.The resulting string is base64 encoded._
+Eg.
+
+```
+    Authorization: Basic dHdpbGlvOmFob3kh
+```
+
+## Endpoints
 
 ---
 
