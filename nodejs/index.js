@@ -13,10 +13,77 @@ app.use(
   })
 );
 const Task = require("./models/Task");
+const User = require("./models/User");
+
+app.use(async (request, response, next) => {
+  // -----------------------------------------------------------------------
+  // authentication middleware
+  if (request.url == "/signup") {
+    return next();
+  }
+
+  // parse login and password from headers
+  const b64auth = (request.headers.authorization || "").split(" ")[1] || "";
+  const [login, password] = Buffer.from(b64auth, "base64")
+    .toString()
+    .split(":");
+
+  // Verify login and password are set and correct
+
+  // Access granted...
+  let p = new Promise((resolve, reject) => {
+    User.exists({ username: login, password: password }, (err, doc) => {
+      if (doc) {
+        console.log("Authentication succesfull");
+
+        resolve(true);
+      } else {
+        console.log("Authentication unsuccesfull");
+        console.log(login);
+        console.log(password);
+        console.log(err);
+        resolve(false);
+      }
+    });
+  });
+
+  if (await p) {
+    console.log("return next()");
+    request.user = login;
+    return next();
+  } else {
+    // Access denied...
+    response.set("WWW-Authenticate", 'Basic realm="401"'); // change this
+    response.status(401).send("Authentication required."); // custom message
+  }
+
+  // -----------------------------------------------------------------------
+});
+
+app.post("/signup", jsonParser, async (request, response) => {
+  const b64auth = (request.headers.authorization || "").split(" ")[1] || "";
+  const [login, password] = Buffer.from(b64auth, "base64")
+    .toString()
+    .split(":");
+  const newUser = new User({
+    username: login,
+    password: password,
+  });
+  try {
+    await newUser.save();
+    response.status(200);
+    response.json({ message: "succesfull" });
+  } catch (err) {
+    console.log(err);
+    response.status(400);
+    response.json({ message: "not succesfull" });
+  }
+});
 
 // Endpoint for all tasks
 app.get("/alltasks", (request, response) => {
-  Task.find({}, (err, tasks) => {
+  Task.find({ user: request.user }, (err, tasks) => {
+    console.log("Current logged in User is " + request.user);
     let sortedtasks = [];
     tasks.forEach((task) => {
       if (!task.is_finished) sortedtasks.push(task);
@@ -36,6 +103,7 @@ app.get("/alltasks", (request, response) => {
 app.post("/alltasks", jsonParser, async (request, response) => {
   console.log(request.body);
   const newTask = new Task({
+    user: request.user,
     title: request.body.title,
     priority: request.body.priority,
     is_finished: request.body.is_finished,

@@ -14,11 +14,13 @@ function App() {
   let [pendingTasks, setPendingTasks] = useState(0);
   let [completeTasks, setCompleteTasks] = useState(0);
   let [cancelledTasks, setCancelledTasks] = useState(0);
-
+  let basicAuth = "Basic " + btoa("asher" + ":" + "password");
   let updateTasks = function () {
-    axios.get(API_URL + "alltasks").then((res) => {
-      setTasks(res.data);
-    });
+    axios
+      .get(API_URL + "alltasks", { headers: { Authorization: +basicAuth } })
+      .then((res) => {
+        setTasks(res.data);
+      });
     axios.get(API_URL + "report").then((res) => {
       setPendingTasks(res.data.no_of_pending_tasks);
       setCompleteTasks(res.data.no_of_completed_tasks);

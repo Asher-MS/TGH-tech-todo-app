@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 const todoTaskSchema = new mongoose.Schema({
+  user: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
