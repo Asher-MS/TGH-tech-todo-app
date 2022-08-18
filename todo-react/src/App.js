@@ -11,9 +11,18 @@ function App() {
   let currentTask = "task";
   let currentPriority = 1;
 
+  let [pendingTasks, setPendingTasks] = useState(0);
+  let [completeTasks, setCompleteTasks] = useState(0);
+  let [cancelledTasks, setCancelledTasks] = useState(0);
+
   let updateTasks = function () {
     axios.get(API_URL + "alltasks").then((res) => {
       setTasks(res.data);
+    });
+    axios.get(API_URL + "report").then((res) => {
+      setPendingTasks(res.data.no_of_pending_tasks);
+      setCompleteTasks(res.data.no_of_completed_tasks);
+      setCancelledTasks(res.data.no_of_cancelled_tasks);
     });
   };
 
@@ -54,6 +63,11 @@ function App() {
         <Button type="success" onClick={addTask}>
           Add
         </Button>
+        <div>
+          <Text>Pending Tasks : {pendingTasks} </Text>
+          <Text>Complete Tasks : {completeTasks} </Text>
+          <Text>Cacelled Tasks : {cancelledTasks} </Text>
+        </div>
         {tasks.map((task) => {
           return (
             <Task
