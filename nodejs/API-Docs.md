@@ -15,9 +15,26 @@
     }
 ```
 
+#### 2.User
+
+---
+
+```
+    {
+        username:String,
+        password:String,
+    }
+```
+
 ### Endpoints
 
 ---
+
+0._/signup_
+
+```
+    POST - create a new user
+```
 
 1._/alltasks_
 
